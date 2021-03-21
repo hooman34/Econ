@@ -12,7 +12,7 @@ import plotly.graph_objects as go
 import os
 import quandl
 from fredapi import Fred
-from utils.utils import (fred_quandl, fred_fred, convert_date_format)
+from econ_platform.utils.utils import (fred_quandl, fred_fred, convert_date_format)
 
 with open('utils/index_codes.json', 'r') as indx:
     index_codes = json.load(indx)
@@ -31,7 +31,7 @@ if page == 'Overview':
 
   if start_date and end_date:
   
-    selected_indices = st.multiselect('Select the index', ['Treasury 10y', 'M2', 'SP500'])
+    selected_indices = st.multiselect('Select the index', ['Treasury 10y', 'M2', 'SP500','CPI-U'])
     if len(selected_indices) >3:
       st.write("Only up to 3 indices can be displayed at once. Please disable the others.")
     else:
@@ -48,6 +48,8 @@ if page == 'Overview':
       
         st.plotly_chart(plot, use_container_width=True)
 
+  # TODO: merge the lines into one graph.
+  # TODO: Create difference bewteen values.
 
 elif page == 'Insights':
     st.write("Insight page")
