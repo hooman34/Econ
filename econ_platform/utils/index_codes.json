@@ -1,0 +1,9 @@
+{"Fred":{"Treasury 10y":"DGS10",
+         "M2":"M2NS",
+         "M2_adjusted":"M2SL",
+         "SP500":"SP500",
+         "CPI-U":"CPIAUCSL",
+         "Breakeven inflation rate 5y":"T5YIE",
+         "Breakeven inflation rate 10y":"T10YIE",
+         "Household Debt Service Payments as a Percent of Disposable Personal Income_adjusted":"TDSP",
+         "Household Financial Obligations as a percent of Disposable Personal Income_adjusted":"FODSP"}}
