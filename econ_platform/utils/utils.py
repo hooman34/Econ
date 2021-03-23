@@ -42,12 +42,12 @@ def convert_date_format(d, format):
     """
     y, m, d = d.split('-')
 
-    if format == 'fred':
+    if format == 'Fred':
         return m+'/'+d+'/'+y
     elif format == 'YMD':
         return y+'-'+m+'-'+d
-    elif format == 'investing.com':
-        return d+'/'+'m'+'/'+y
+    elif format == 'Investing.com':
+        return d+'/'+m+'/'+y
 
 def fred_quandl(indx, start_date, end_date):
     """
