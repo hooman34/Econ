@@ -8,4 +8,6 @@
          "Household Debt Service Payments as a Percent of Disposable Personal Income_adjusted":"TDSP",
          "Household Financial Obligations as a percent of Disposable Personal Income_adjusted":"FODSP"},
 "Investing.com":{"etf - Vanguard Value ETF":"VTV",
-                 "etf - Vanguard Growth ETF":"VUG"}}
+                 "etf - Vanguard Growth ETF":"VUG",
+                 "stock - Microsoft":"MSFT",
+                 "stock - Amazon":"AMZN"}}

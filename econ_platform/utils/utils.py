@@ -81,5 +81,9 @@ def investing_api(call_type, ticker, from_date, to_date, country='united states'
         data = investpy.get_etf_historical_data(etf=etf_name, country=country,
                                                 from_date=from_date,
                                                 to_date=to_date).reset_index()
+    if call_type=='stock':
+        data = investpy.stocks.get_stock_historical_data(stock=ticker, country=country,
+                                                        from_date=from_date,
+                                                        to_date=to_date).reset_index()
     return data
 
