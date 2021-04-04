@@ -12,7 +12,8 @@ import plotly.graph_objects as go
 import os
 import quandl
 from fredapi import Fred
-from econ_platform.utils.utils import (fred_quandl, fred_fred, investing_api, convert_date_format)
+from econ_platform.utils.utils import (fred_quandl, fred_fred, investing_api, convert_date_format,
+                                       seekingAlpha_estimates)
 
 with open('econ_platform/utils/index_codes.json', 'r') as indx:
     index_codes = json.load(indx)
@@ -79,12 +80,22 @@ def _plotly_create_trace(data, source, selected_index):
                        name=selected_index)
   return trace
 
+@st.cache
+def call_estimates(ticker_list, data_type, period_type='annual'):
+
+  estimate_list = list()
+  for ticker in ticker_list:
+    estimate_list.append(seekingAlpha_estimates(ticker, data_type, period_type))
+
+  estimates_all = pd.concat(estimate_list, axis=0)
+  return estimates_all
+
 
 st.set_page_config(layout="wide") 
 st.title("PLATFORM")
 
 page = st.sidebar.selectbox(
-  'Select page', ('Draw graphs', 'Insights')
+  'Select page', ('Draw graphs', 'Portfolio Check')
   )
 
 if page == 'Draw graphs':
@@ -101,31 +112,13 @@ if page == 'Draw graphs':
     st.plotly_chart(fig2, use_container_width=True)
 
 
-elif page == 'Insights':
-    st.write("Insight page")
-#   st.subheader("Result of dynamic regression")
-#   st.write("The first time running the model might take a while.")
-#   ## execute Rscript
-#   execute_dymanicreg()
-#   st.write("Done executing Rscript. See the results below.")
-#   ##
-#   summary = st.checkbox('Show summary of dynamic regression')
-#   resultplot = st.checkbox('Show result plot')
-#   boxpierce = st.checkbox("Show result of box pierce test")
-#   residuals = st.checkbox('Show residual plots')
-#   ##
-#   if summary:
-#     f = open('result/arima_result.txt', 'r')
-#     st.text(f.read())
-#   if resultplot:
-#     img = Image.open('result/result_plot.jpg')
-#     st.image(img, use_column_width=True)
-#   if boxpierce:
-#     f = open('result/box_pierce_test.txt', 'r')
-#     st.text(f.read())
-#   if residuals:
-#     acf = Image.open('result/residual_acf.jpg')
-#     pacf = Image.open('result/residual_pacf.jpg')
-#     histo = Image.open('result/residual_histo.jpg')
-#     res = Image.open('result/residual_plot.jpg')
-#     st.image([acf, pacf, histo, res], use_column_width=True)
+elif page == 'Portfolio Check':
+  st.write("Portfolio Check")
+
+  data_type = st.selectbox("Select data type", ('eps', 'revenues'))
+  ticker_list = st.text_input('Input all the tickers. Separated with space. e.g. "AAPL AMZN LMT MSFT"')
+  ticker_list = ticker_list.split(' ')
+  if st.button("Retrieve data"):
+    estimates_all = call_estimates(ticker_list, data_type)
+    st.dataframe(estimates_all)
+
