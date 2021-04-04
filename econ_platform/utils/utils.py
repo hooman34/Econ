@@ -9,7 +9,7 @@ import investpy
 
 # # To extract fundamental data
 # from bs4 import BeautifulSoup as bs
-# import requests
+import requests
 
 # auth
 basepath = Path(__file__).parent.parent
@@ -87,3 +87,53 @@ def investing_api(call_type, ticker, from_date, to_date, country='united states'
                                                         to_date=to_date).reset_index()
     return data
 
+def seekingAlpha_estimates(ticker, data_type, period_type, key=keys['rapidAPI_seekingalpha']):
+    
+    assert data_type in ['eps', 'revenues']
+    assert period_type in ['quarterly','annual']
+    url = "https://seeking-alpha.p.rapidapi.com/symbols/get-estimates"
+
+    querystring = {"symbol":ticker.lower(),
+                   "data_type":data_type,
+                   "period_type":period_type}
+    headers = {
+        'x-rapidapi-key': key,
+        'x-rapidapi-host': "seeking-alpha.p.rapidapi.com"
+        }
+        
+    response = requests.request("GET", url, headers=headers, params=querystring)
+    df = pd.DataFrame([response.json()['data'][i]['attributes'] for i in range(len(response.json()['data']))])
+    return df
+
+def _plot_two_data(plot_type1, data1, x1, y1, plot_type2, data2, x2, y2):
+
+    trace1 = _create_trace(plot_typd1, data1, x1, y1)
+    trace2 = _create_trace(plot_typd2, data2, x2, y2)
+    
+    fig = make_subplots(specs=[[{"secondary_y": True}]])
+    fig.add_trace(trace1)
+    fig.add_trace(trace2, secondary_y=True)
+
+    fig.update_layout(legend=dict(
+        orientation="h",
+        yanchor="bottom",
+        y=1.02,
+        xanchor="right",
+        x=1
+    ))
+
+    return fig
+
+def _create_trace(plot_type, data, x, y):
+    """
+    create trace
+    """
+    if plot_type=='bar':
+        trace = go.Bar(x=data[x],
+                       y=data[y],
+                       name=y)
+    if plot_type=='line':
+        trace = go.Scatter(x=data[x],
+                       y=data[y],
+                       name=y)
+    return trace
