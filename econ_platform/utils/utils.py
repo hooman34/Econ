@@ -87,7 +87,7 @@ def investing_api(call_type, ticker, from_date, to_date, country='united states'
                                                         to_date=to_date).reset_index()
     return data
 
-def seekingAlpha_estimates(ticker, data_type, period_type, key=keys['rapidAPI_seekingalpha']):
+def seekingAlpha_estimates(ticker, data_type, period_type='annual', key=keys['rapidAPI_seekingalpha']):
     
     assert data_type in ['eps', 'revenues']
     assert period_type in ['quarterly','annual']
@@ -100,9 +100,14 @@ def seekingAlpha_estimates(ticker, data_type, period_type, key=keys['rapidAPI_se
         'x-rapidapi-key': key,
         'x-rapidapi-host': "seeking-alpha.p.rapidapi.com"
         }
-        
+
     response = requests.request("GET", url, headers=headers, params=querystring)
     df = pd.DataFrame([response.json()['data'][i]['attributes'] for i in range(len(response.json()['data']))])
+
+    df['average'] = df['actual']
+    df.loc[df['actual'].isna(), 'average'] = df.loc[df['actual'].isna(), 'consensus']
+    df['average'] = df['average'].mean()
+
     return df
 
 def _plot_two_data(plot_type1, data1, x1, y1, plot_type2, data2, x2, y2):
