@@ -26,4 +26,10 @@
                  "etf - Vanguard Extended Duration Treasury Bond ETF":"EDV",
                  "etf - First Trust NASDAQ clean edge green energy":"QCLN",
                  "stock - Microsoft":"MSFT",
-                 "stock - Amazon":"AMZN"}}
+                 "stock - Amazon":"AMZN",
+                 "stock - PayPal": "PYPL",
+                 "stock - Realty Income": "O",
+                 "stock - The Procter & Gamble Company": "PG",
+                 "stock - Alphabet": "GOOGL",
+                 "stock - JPMorgan Chase & Co": "JPM",
+                 "stock - Microsoft Corporation": "MSFT"}}
